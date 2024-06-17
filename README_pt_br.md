@@ -44,7 +44,7 @@ Certifique-se de ter os seguintes itens instalados antes de continuar:
 2. Construa a imagem Docker:
 
     ```sh
-    docker build -t stress-test-app .
+    docker build -t stress-test .
     ```
 
 ## 🚀&nbsp;Uso
@@ -52,7 +52,7 @@ Certifique-se de ter os seguintes itens instalados antes de continuar:
 Após construir a imagem Docker, você pode executar o teste de estresse usando o seguinte comando:
 
 ```sh
-docker run stress-test-app --url=http://example.com --requests=1000 --concurrency=10
+docker run stress-test --url=http://example.com --requests=1000 --concurrency=10
 ```
 
 ### 📄&nbsp;Parâmetros da Linha de Comando
@@ -75,7 +75,7 @@ Aqui estão alguns exemplos de uso do CLI de teste de estresse:
 
 - Testar um serviço web com 1000 requisições e 10 chamadas simultâneas:
     ```sh
-    docker run stress-test-app --url=http://example.com --requests=1000 --concurrency=10
+    docker run stress-test --url=http://example.com --requests=1000 --concurrency=10
     ```
 
 ## 🤝&nbsp;Contribuição
