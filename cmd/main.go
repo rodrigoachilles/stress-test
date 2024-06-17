@@ -95,10 +95,7 @@ func stressTest(url string, requests, concurrency int, results chan *Result) {
 	for i := 0; i < concurrency; i++ {
 		go func() {
 			for j := 0; j < requestsPerWorker; j++ {
-				resp, err := httpClient.Get(url)
-				if err != nil {
-					logger.Fatal("Error making request", err)
-				}
+				resp, _ := httpClient.Get(url)
 				results <- &Result{StatusCode: resp.StatusCode}
 			}
 		}()
@@ -106,18 +103,15 @@ func stressTest(url string, requests, concurrency int, results chan *Result) {
 
 	remainder := requests % concurrency
 	for j := 0; j < remainder; j++ {
-		resp, err := httpClient.Get(url)
-		if err != nil {
-			logger.Fatal("Error making request", err)
-		}
+		resp, _ := httpClient.Get(url)
 		results <- &Result{StatusCode: resp.StatusCode}
 	}
 }
 
 func report(resultOutput ResultOutput) {
 	logger.Info("=== Stress Test Results ===")
-	logger.Info(fmt.Sprintf("Total time: %s\n", resultOutput.Elapsed))
-	logger.Info(fmt.Sprintf("Total requests: %d\n", resultOutput.TotalRequests))
+	logger.Info(fmt.Sprintf("Total time: %s", resultOutput.Elapsed))
+	logger.Info(fmt.Sprintf("Total requests: %d", resultOutput.TotalRequests))
 	reportStatusCode("1xx", resultOutput.StatusCode1xx)
 	reportStatusCode("2xx", resultOutput.StatusCode2xx)
 	reportStatusCode("3xx", resultOutput.StatusCode3xx)
@@ -126,9 +120,9 @@ func report(resultOutput ResultOutput) {
 }
 
 func reportStatusCode(statusCodeTitle string, statusCodes []int) {
-	logger.Info(fmt.Sprintf("HTTP Status Code [%s]: %d\n", statusCodeTitle, len(statusCodes)))
+	logger.Info(fmt.Sprintf("HTTP Status Code [%s]: %d", statusCodeTitle, len(statusCodes)))
 	for status, count := range groupStatusCode(statusCodes) {
-		logger.Info(fmt.Sprintf(" - [%d] : %d\n", status, count))
+		logger.Info(fmt.Sprintf(" * [%d] : %d", status, count))
 	}
 }
 

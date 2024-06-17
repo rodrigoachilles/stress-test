@@ -3,7 +3,6 @@ package logger
 import (
 	"github.com/rs/zerolog"
 	"os"
-	"runtime/debug"
 	"time"
 )
 
@@ -12,26 +11,14 @@ var (
 )
 
 func init() {
-	buildInfo, _ := debug.ReadBuildInfo()
-
 	log = zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.DateTime}).
 		Level(zerolog.TraceLevel).
 		With().
 		Timestamp().
-		Caller().
-		Int("pid", os.Getpid()).
-		Str("go_version", buildInfo.GoVersion).
 		Logger()
 
 }
 
 func Info(message string) {
 	log.Info().Msg(message)
-}
-
-func Fatal(message string, err error) {
-	if err != nil {
-		log.Fatal().Err(err).Msg(message)
-	}
-	log.Fatal().Msg(message)
 }
